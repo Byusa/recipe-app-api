@@ -1,1 +1,19 @@
 version: "3.9"
+
+services: 
+  app: 
+    build:
+      # . current directory 
+      context: .
+      args: 
+      # set a build arg tore
+        - DEV=true
+    ports:
+      # network when we want to connect to the server
+      - "8000:8000"
+    volumes:
+      # way to map app directory inside our container
+      - ./app:/app
+      # command to run the server 
+    command: >
+      sh -c "python manage.py runserver 0.0.0.0:8000"
