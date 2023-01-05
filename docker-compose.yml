@@ -13,6 +13,7 @@ services:
       - "8000:8000"
     volumes:
       # way to map app directory inside our container
+      # you can create file in container and access them in project and viceversa
       - ./app:/app
       # command to run the server 
     command: >
