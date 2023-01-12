@@ -1,0 +1,24 @@
+---
+name: Checks
+
+on: [push] # a push we make (trigger)
+
+jobs:
+  test-lint:
+    name: Test and Lint # this is the name you are gonna 
+    runs-on: ubuntu-20.04 # runner (OS) that we are gonna be seeing
+    steps: 
+      - name: Login to Docker Hub
+        uses: docker/login-action@v1 # action used to login to docker
+        with:
+          username: ${{ secrets.DOCKERHUB_USER }} # parameters used to login to docker
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Checkout # to make sure that it is availble to run the code 
+        uses: actions/checkout@v2
+      - name: Test # run the test using docker compose 
+        run: docker-compose run --rm app sh -c "python manage.py test" # command to run unit tests in our code 
+      - name: Lint # run the lint using docker compose 
+        run: docker-compose run app sh -c "flake8"
+
+
+
