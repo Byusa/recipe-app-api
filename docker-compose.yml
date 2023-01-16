@@ -15,9 +15,11 @@ services:
       # way to map app directory inside our container
       # you can create file in container and access them in project and viceversa
       - ./app:/app
-      # command to run the server 
+      # command to run before our app starts, wait_for_db, migrate, the runserver 
     command: >
-      sh -c "python manage.py runserver 0.0.0.0:8000"
+      sh -c "python manage.py wait_for_db && 
+             python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
 
     environment:
       - DB_HOST=db
