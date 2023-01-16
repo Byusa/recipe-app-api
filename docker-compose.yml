@@ -18,3 +18,23 @@ services:
       # command to run the server 
     command: >
       sh -c "python manage.py runserver 0.0.0.0:8000"
+
+    environment:
+      - DB_HOST=db
+      - DB_NAME=devdb
+      - DB_USER=devuser
+      - DB_PASS=changeme
+    depends_on:
+      - db # let the app depends on db if db fails then app fails
+
+  db:
+    image: postgres:13-alpine #image to use https://hub.docker.com/search?q=postgres
+    volumes:
+      - dev-db-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=devdb # To set the initail database configuration to new db service
+      - POSTGRES_USER=devuser
+      - POSTGRES_PASSWORD=changeme # set password to changeme (creating for dev for our local machine)
+
+volumes:
+  dev-db-data:
