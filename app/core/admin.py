@@ -3,7 +3,8 @@ Django admin customization
 """
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from django.utils.translation import gettext_lazy as _ #translate (shortcut to not call it always)
+# _ translate (shortcut to not call it always)
+from django.utils.translation import gettext_lazy as _
 
 from core import models
 
@@ -41,7 +42,7 @@ class UserAdmin(BaseUserAdmin):
             }
         )
     )
-    readonly_fields=['last_login']  # for only reading the lastlogin
+    readonly_fields = ['last_login']  # for only reading the lastlogin
     add_fieldsets = (
         (
             None,
