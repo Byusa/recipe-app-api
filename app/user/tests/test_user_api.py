@@ -9,7 +9,7 @@ from rest_framework.test import APIClient
 from rest_framework import status
 
 
-CREATE_USER_URL = reverse('user:create')
+CREATE_USER_URL = reverse('user:create')  # reverse will find the user in user
 
 
 def create_user(**params):
