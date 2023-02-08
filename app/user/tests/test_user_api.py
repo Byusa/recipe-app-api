@@ -56,7 +56,7 @@ class PublicUserApiTests(TestCase):
         payload = {
             'email': 'test@example.com',
             'password': 'pw',
-            'name': 'Test Name',
+            'name': 'Test name',
         }
         res = self.client.post(CREATE_USER_URL, payload)
 
@@ -65,6 +65,14 @@ class PublicUserApiTests(TestCase):
             email=payload['email']
         ).exists()
         self.assertFalse(user_exists)
+
+    def test_create_token_email_not_found(self):
+        """Test error returned if user not found for guven email."""
+        payload = {'email': 'test@example.com', 'password': 'pass123'}
+        res = self.client.post(TOKEN_URL, payload)
+
+        self.assertNotIn('token', res.data)
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_create_token_for_user(self):
         """Test generates token for valid credentials."""
@@ -121,7 +129,7 @@ class PrivateUserApiTests(TestCase):
         self.client = APIClient()
         self.client.force_authenticate(user=self.user)
 
-    def test_retrieve_progile_success(self):
+    def test_retrieve_profile_success(self):
         """Test retrieving profile for logged in user."""
         # retrieve the details of the authenticated user
         res = self.client.get(ME_URL)
@@ -133,12 +141,12 @@ class PrivateUserApiTests(TestCase):
         })
 
     def test_post_me_not_allowed(self):
-        """Test POST is not allowerd for the me endpoint."""
+        """Test POST is not allowed for the me endpoint."""
         res = self.client.post(ME_URL, {})
 
         self.assertEqual(res.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
 
-    def test_update_user_profle(self):
+    def test_update_user_profile(self):
         """Test updating the user profile for the authenticated user."""
         payload = {'name': 'Updated name', 'password': 'newpassword123'}
 

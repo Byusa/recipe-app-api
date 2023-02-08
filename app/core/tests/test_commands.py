@@ -3,7 +3,7 @@ Test custom Django management commands.
 """
 from unittest.mock import patch  # mock the behavior of the DB
 # possible error we might get when we use a non ready DB
-from psycopg2 import OperationalError as Psycopg2Error
+from psycopg2 import OperationalError as Psycopg2OpError
 
 # allow to simulate the code we are test
 from django.core.management import call_command
@@ -26,9 +26,9 @@ class CommandTests(SimpleTestCase):
     @patch('time.sleep')
     def test_wait_for_db_delay(self, patched_sleep, patched_check):
         """Test waiting for database when getting OperationError."""
-        # first two times raise Psycopg2Error
+        # first two times raise Psycopg2OpError
         # then the next 3 times we raise OperationalError
-        patched_check.side_effect = [Psycopg2Error] * 2 + \
+        patched_check.side_effect = [Psycopg2OpError] * 2 + \
             [OperationalError] * 3 + [True]
 
         call_command('wait_for_db')
