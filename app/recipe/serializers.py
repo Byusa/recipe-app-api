@@ -14,3 +14,10 @@ class RecipeSerializer(serializers.ModelSerializer):
         fields = ['id', 'title', 'time_minutes', 'price', 'link']
         # We don't want to allow users to update the id field
         read_only_fields = ['id']
+
+
+class RecipeDetailSerializer(serializers.ModelSerializer):
+    """Serializer for recipe details."""
+
+    class Meta(RecipeSerializer.Meta):
+        fields = RecipeSerializer.Meta.fields + ['description']
